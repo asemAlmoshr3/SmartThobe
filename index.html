@@ -50,8 +50,8 @@
       font-size: 1.1em;
       line-height: 1.6;
     }
-    #copyBtn {
-      margin-top: 15px;
+    #copyBtn, #resetBtn {
+      margin-top: 10px;
       padding: 10px 20px;
       background-color: #ff9800;
       color: white;
@@ -59,10 +59,11 @@
       border-radius: 6px;
       font-size: 1em;
       cursor: pointer;
+      margin-left: 5px;
     }
     video {
       width: 100%;
-      max-width: 400px;
+      max-width: 300px;
       border-radius: 10px;
       margin-top: 20px;
       display: none;
@@ -76,30 +77,37 @@
 
   <div class="mode-selection">
     <p>اختر طريقة القياس:</p>
-    <button class="mode-button ready" onclick="showResults('ready')">🧥 قياس من ثوب جاهز</button>
-    <button class="mode-button body" onclick="showResults('body')">🧍‍♂️ قياس الجسم المباشر</button>
+    <button class="mode-button ready" onclick="startCameraAndShow('ready')">🧥 قياس من ثوب جاهز</button>
+    <button class="mode-button body" onclick="startCameraAndShow('body')">🧍‍♂️ قياس الجسم المباشر</button>
   </div>
 
   <div class="result-box" id="resultsBox">
     <p id="resultsText"></p>
     <button id="copyBtn" onclick="copyResults()">📋 نسخ القياسات</button>
+    <button id="resetBtn" onclick="resetMeasurements()">👤 زبون جديد</button>
   </div>
 
   <script>
-    const video = document.getElementById("video");
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then((stream) => {
-        video.srcObject = stream;
-        video.style.display = "block";
-      })
-      .catch((err) => {
-        alert("⚠️ لم يتم السماح باستخدام الكاميرا. الرجاء تفعيل الإذن من المتصفح.");
-        console.error(err);
-      });
+    let currentMode = null;
+
+    function startCameraAndShow(mode) {
+      const video = document.getElementById("video");
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+          video.srcObject = stream;
+          video.style.display = "block";
+          showResults(mode);
+        })
+        .catch((err) => {
+          alert("⚠️ لم يتم السماح باستخدام الكاميرا. الرجاء تفعيل الإذن من المتصفح.");
+          console.error(err);
+        });
+    }
 
     function showResults(mode) {
       const box = document.getElementById("resultsBox");
       const text = document.getElementById("resultsText");
+      currentMode = mode;
 
       if (mode === 'ready') {
         text.innerText =
@@ -126,6 +134,11 @@
       navigator.clipboard.writeText(text).then(() => {
         alert("✅ تم نسخ القياسات بنجاح!");
       });
+    }
+
+    function resetMeasurements() {
+      document.getElementById("resultsBox").style.display = "none";
+      document.getElementById("resultsText").innerText = "";
     }
   </script>
 </body>
