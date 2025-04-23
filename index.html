@@ -3,143 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>قياسات الثوب الذكي - إصدار المحل</title>
+  <title>واجهة البرنامج - قياسات الثوب الذكي</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f9f9f9;
+      background-color: #e8f0f8;
       margin: 0;
       padding: 0;
       text-align: center;
     }
-    h1 {
-      background-color: #343a40;
+    header {
+      background-color: #0a3d62;
       color: white;
       padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    header h1 {
       margin: 0;
+      font-size: 1.8em;
     }
-    .mode-selection {
-      margin: 30px 0;
+    .main-section {
+      padding: 30px 20px;
     }
-    .mode-button {
-      padding: 15px 30px;
-      margin: 10px;
-      font-size: 1.2em;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .mode-button.ready {
-      background-color: #28a745;
-      color: white;
-    }
-    .mode-button.body {
-      background-color: #007bff;
-      color: white;
-    }
-    .result-box {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      display: none;
-      max-width: 400px;
-      margin: auto;
-    }
-    .result-box p {
+    .btn {
+      padding: 15px 25px;
       font-size: 1.1em;
-      line-height: 1.6;
-    }
-    #copyBtn, #resetBtn {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #ff9800;
-      color: white;
       border: none;
-      border-radius: 6px;
-      font-size: 1em;
-      cursor: pointer;
-      margin-left: 5px;
-    }
-    video {
-      width: 100%;
-      max-width: 300px;
       border-radius: 10px;
-      margin-top: 20px;
-      display: none;
+      cursor: pointer;
+      margin: 10px;
+      transition: all 0.3s ease;
+    }
+    .btn-start {
+      background-color: #27ae60;
+      color: white;
+    }
+    .btn-start:hover {
+      background-color: #219150;
+    }
+    .btn-help {
+      background-color: #2980b9;
+      color: white;
+    }
+    .btn-help:hover {
+      background-color: #1f6390;
+    }
+    .footer {
+      margin-top: 60px;
+      color: #888;
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
-  <h1>📏 قياسات الثوب الذكي - إصدار المحل</h1>
+  <header>
+    <h1>📏 واجهة البرنامج - نظام قياسات الثوب الذكي</h1>
+  </header>
 
-  <video id="video" autoplay playsinline></video>
-
-  <div class="mode-selection">
-    <p>اختر طريقة القياس:</p>
-    <button class="mode-button ready" onclick="startCameraAndShow('ready')">🧥 قياس من ثوب جاهز</button>
-    <button class="mode-button body" onclick="startCameraAndShow('body')">🧍‍♂️ قياس الجسم المباشر</button>
+  <div class="main-section">
+    <p style="font-size: 1.2em; margin-bottom: 30px;">مرحباً بك في نظام قياس الثياب الذكي 👋<br>اختر العملية التي ترغب في تنفيذها:</p>
+    <button class="btn btn-start" onclick="location.href='index.html'">🚀 بدء قياس جديد</button>
+    <button class="btn btn-help" onclick="alert('يرجى التأكد من تشغيل الكاميرا والوقوف بوضعية مستقيمة، ثم اختيار نوع القياس.')">🧠 تعليمات الاستخدام</button>
   </div>
 
-  <div class="result-box" id="resultsBox">
-    <p id="resultsText"></p>
-    <button id="copyBtn" onclick="copyResults()">📋 نسخ القياسات</button>
-    <button id="resetBtn" onclick="resetMeasurements()">👤 زبون جديد</button>
+  <div class="footer">
+    تم التطوير بحب 💛 بواسطة عاصم وأليتا<br>© 2025 SmartThobe
   </div>
-
-  <script>
-    let currentMode = null;
-
-    function startCameraAndShow(mode) {
-      const video = document.getElementById("video");
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then((stream) => {
-          video.srcObject = stream;
-          video.style.display = "block";
-          showResults(mode);
-        })
-        .catch((err) => {
-          alert("⚠️ لم يتم السماح باستخدام الكاميرا. الرجاء تفعيل الإذن من المتصفح.");
-          console.error(err);
-        });
-    }
-
-    function showResults(mode) {
-      const box = document.getElementById("resultsBox");
-      const text = document.getElementById("resultsText");
-      currentMode = mode;
-
-      if (mode === 'ready') {
-        text.innerText =
-          "📏 تم القياس من ثوب جاهز:\n" +
-          "الطول الكامل: 54.3 إنش\n" +
-          "عرض الأكتاف: 18.1 إنش\n" +
-          "طول الذراع: 24 إنش\n" +
-          "محيط الرقبة: 15 إنش (يُدخل يدويًا)";
-      } else {
-        text.innerText =
-          "📏 تم القياس من الجسم مباشرة:\n" +
-          "الطول من الكتف للقدم: 55.1 إنش\n" +
-          "عرض الأكتاف: 18.5 إنش\n" +
-          "عرض الصدر: 16.9 إنش\n" +
-          "طول الذراع: 23.6 إنش\n" +
-          "محيط الرقبة: يُدخل يدويًا";
-      }
-
-      box.style.display = "block";
-    }
-
-    function copyResults() {
-      const text = document.getElementById("resultsText").innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("✅ تم نسخ القياسات بنجاح!");
-      });
-    }
-
-    function resetMeasurements() {
-      document.getElementById("resultsBox").style.display = "none";
-      document.getElementById("resultsText").innerText = "";
-    }
-  </script>
 </body>
 </html>
