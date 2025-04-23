@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>إصدار المحل - قياسات الثوب الذكي</title>
   <style>
     body {
@@ -70,16 +70,31 @@
 
   <div class="mode-selection">
     <p>اختر طريقة القياس:</p>
-    <button class="mode-button ready" onclick="showResults('ready')">🧥 قياس من ثوب جاهز</button>
-    <button class="mode-button body" onclick="showResults('body')">🧍‍♂️ قياس الجسم المباشر</button>
+    <button class="mode-button ready" id="btnReady">🧥 قياس من ثوب جاهز</button>
+    <button class="mode-button body" id="btnBody">🧍‍♂️ قياس الجسم المباشر</button>
   </div>
 
   <div class="result-box" id="resultsBox">
     <p id="resultsText"></p>
-    <button id="copyBtn" onclick="copyResults()">📋 نسخ القياسات</button>
+    <button id="copyBtn">📋 نسخ القياسات</button>
   </div>
 
   <script>
+    document.getElementById("btnReady").addEventListener("click", function() {
+      showResults('ready');
+    });
+
+    document.getElementById("btnBody").addEventListener("click", function() {
+      showResults('body');
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", function() {
+      const text = document.getElementById("resultsText").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("✅ تم نسخ القياسات بنجاح!");
+      });
+    });
+
     function showResults(mode) {
       const resultsBox = document.getElementById("resultsBox");
       const resultsText = document.getElementById("resultsText");
@@ -111,13 +126,6 @@
       }
 
       resultsBox.style.display = "block";
-    }
-
-    function copyResults() {
-      const text = document.getElementById("resultsText").innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("✅ تم نسخ القياسات بنجاح!");
-      });
     }
   </script>
 </body>
